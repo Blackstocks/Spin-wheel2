@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const LandingPage = () => {
+  const [downloadLink, setDownloadLink] = useState('#');
+
+  useEffect(() => {
+    // Detect if the device is iOS or Android
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/android/i.test(userAgent)) {
+      setDownloadLink('https://play.google.com/store/apps/details?id=com.buygram.freshstock&pcampaignid=web_share');
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      setDownloadLink('https://apps.apple.com/in/app/freshstock-buyonegram/id6705126130');
+    }
+  }, []);
+
   return (
     <Container>
       <Content>
         <Title>Welcome to Our App!</Title>
         <Subtitle>Please click below to download the app.</Subtitle>
-        <Button href="#">Download the App</Button>
+        <Button href={downloadLink} target="_blank" rel="noopener noreferrer">
+          Download the App
+        </Button>
       </Content>
     </Container>
   );
